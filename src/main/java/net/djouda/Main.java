@@ -1,17 +1,34 @@
 package net.djouda;
 
+import java.util.Scanner;
+
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
     public static void main(String[] args) {
-        //TIP Press <shortcut actionId="ShowIntentionActions"/> with your caret at the highlighted text
-        // to see how IntelliJ IDEA suggests fixing it.
-        System.out.printf("Hello and welcome!");
+        Scanner scanner = new Scanner(System.in);
+        Saisie saisie = new Saisie(scanner);
 
-        for (int i = 1; i <= 5; i++) {
-            //TIP Press <shortcut actionId="Debug"/> to start debugging your code. We have set one <icon src="AllIcons.Debugger.Db_set_breakpoint"/> breakpoint
-            // for you, but you can always add more by pressing <shortcut actionId="ToggleLineBreakpoint"/>.
-            System.out.println("i = " + i);
-        }
+        System.out.println("=== Configuration d'un véhicule (composition) ===");
+
+        String marque = saisie.lireTexte("Marque : ");
+        String modele = saisie.lireTexte("Modèle : ");
+        FabriqueVehicule.TypeVehicule type = saisie.lireTypeVehicule();
+        Moteur moteur = saisie.lireMoteur();   // ← le moteur est construit tout seul
+
+        Véhicules vehicule = FabriqueVehicule.creer(type, marque, modele, moteur);
+
+        System.out.println("\n=== Véhicule créé ===");
+        System.out.println(vehicule);
+
+        System.out.println("\n--- Test de roulage ---");
+        vehicule.demarrer();
+        vehicule.accelerer(50);
+        vehicule.accelerer(30);
+        System.out.println("État : " + vehicule);
+        vehicule.arreter();
+        System.out.println("Après arrêt : " + vehicule);
+
+        scanner.close();
     }
 }
